@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StatBet777 — Demo</title>
+<style>
+:root{--bg:#0b0e13;--panel:#131821;--panel2:#191f2a;--line:#252d39;--text:#f5f7fa;--muted:#9aa4b2;--accent:#ffb000;--green:#28d17c;--red:#ff5364}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,Helvetica,sans-serif}
+header{height:64px;background:#10141b;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 22px;gap:24px;position:sticky;top:0;z-index:10}
+.logo{font-size:23px;font-weight:900;color:var(--accent);letter-spacing:.5px}.logo span{color:#fff}
+nav{display:flex;gap:18px;color:#cbd2dc}nav a{cursor:pointer}.active{color:var(--accent)}
+.balance{margin-left:auto;background:#1c2430;border:1px solid var(--line);padding:9px 13px;border-radius:8px}.balance b{color:var(--green)}
+main{display:grid;grid-template-columns:210px 1fr 330px;min-height:calc(100vh - 64px)}
+aside,.coupon{background:#10151d;border-right:1px solid var(--line);padding:18px}.coupon{border-left:1px solid var(--line);border-right:0}
+.menu-title{font-size:11px;color:var(--muted);text-transform:uppercase;margin:8px 0 12px}
+.menu-item{padding:11px 10px;border-radius:7px;margin-bottom:4px;cursor:pointer}.menu-item:hover,.menu-item.selected{background:#1c2430;color:var(--accent)}
+.content{padding:22px;max-width:1200px;width:100%;margin:auto}
+.hero{background:linear-gradient(115deg,#24200d,#151b25);border:1px solid #3a321a;border-radius:12px;padding:24px;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:28px}.hero p{color:var(--muted);margin:0}
+.section{margin-top:20px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.section-head h2{font-size:18px;margin:0}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.game{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px;cursor:pointer}.game:hover{border-color:#4a5667;transform:translateY(-1px)}
+.game-icon{height:90px;border-radius:8px;background:linear-gradient(135deg,#30240d,#1e2631);display:flex;align-items:center;justify-content:center;font-size:31px;margin-bottom:12px}.game h3{margin:0 0 4px}.tag{font-size:11px;color:var(--muted)}
+.match{background:var(--panel);border:1px solid var(--line);border-radius:9px;margin:9px 0;padding:13px}.league{color:var(--muted);font-size:11px;margin-bottom:10px}.teams{display:flex;justify-content:space-between;margin-bottom:10px}.odds{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.odd{background:var(--panel2);border:1px solid var(--line);padding:9px;border-radius:6px;text-align:center;cursor:pointer}.odd:hover{border-color:var(--accent);color:var(--accent)}
+.coupon h3{margin-top:0}.empty{color:var(--muted);text-align:center;padding:50px 15px}.bet{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px;margin:8px 0}.bet small{color:var(--muted)}.bet b{float:right;color:var(--accent)}
+.cta{width:100%;border:0;background:var(--accent);padding:13px;border-radius:7px;font-weight:800;cursor:pointer;margin-top:10px}.clear{background:transparent;color:var(--muted);border:0;cursor:pointer;margin-top:8px;width:100%}
+.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:16px;padding:10px;border:1px solid var(--line);border-radius:7px}
+@media(max-width:900px){main{grid-template-columns:1fr}.sidebar,.coupon{display:none}.cards{grid-template-columns:repeat(2,1fr)}header nav{display:none}}
+@media(max-width:500px){.cards{grid-template-columns:1fr}.content{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">STAT<span>BET777</span></div>
+  <nav><a class="active" onclick="show('home')">Início</a><a onclick="show('sports')">Esportes</a><a onclick="show('casino')">Cassino Demo</a><a onclick="show('history')">Histórico</a></nav>
+  <div class="balance">Saldo demo: <b id="balance">R$ 10.000,00</b></div>
+</header>
+<main>
+<aside class="sidebar">
+  <div class="menu-title">Esportes</div>
+  <div class="menu-item selected" onclick="show('sports')">⚽ Futebol</div>
+  <div class="menu-item" onclick="show('sports')">🏀 Basquete</div>
+  <div class="menu-item" onclick="show('sports')">🎾 Tênis</div>
+  <div class="menu-item" onclick="show('sports')">🏎️ Automobilismo</div>
+  <div class="menu-title">Jogos demo</div>
+  <div class="menu-item" onclick="show('casino')">🐯 Fortune Tiger</div>
+  <div class="menu-item" onclick="show('casino')">🐰 Fortune Rabbit</div>
+  <div class="menu-item" onclick="show('casino')">✈️ Aviator</div>
+</aside>
+
+<section class="content" id="content"></section>
+
+<aside class="coupon">
+  <h3>Cupom de aposta</h3>
+  <div id="coupon"><div class="empty">Selecione uma odd para adicionar ao cupom.</div></div>
+  <div id="stakebox" style="display:none">
+    <label>Valor virtual</label>
+    <input id="stake" type="number" min="1" value="100" style="width:100%;margin-top:6px;padding:10px;background:#0d1219;border:1px solid var(--line);color:white;border-radius:6px">
+    <button class="cta" onclick="placeBet()">Confirmar aposta demo</button>
+    <button class="clear" onclick="clearCoupon()">Limpar</button>
+  </div>
+  <div class="notice">DEMO — esta plataforma usa apenas créditos virtuais. Não há depósitos, saques, prêmio em dinheiro ou conexão com operadores reais.</div>
+</aside>
+</main>
+<script>
+let balance=10000, coupon=[], history=[];
+const games=[
+ ['Fortune Tiger','🐯','Slot demo'],['Fortune Rabbit','🐰','Slot demo'],['Aviator','✈️','Crash demo'],['Lucky Fruits','🍒','Slot demo'],
+ ['Dragon Gold','🐲','Slot demo'],['Rocket Demo','🚀','Crash demo'],['Neon Dice','🎲','Dice demo'],['777 Stars','⭐','Slot demo']
+];
+const matches=[
+ ['Brasileirão • 19:00','Atlético Demo','Goiás Demo',['1.82','3.45','4.10']],
+ ['Liga Demo • 20:30','Real Azul','Barcelona Verde',['2.25','3.20','2.70']],
+ ['Basquete Demo • 21:00','Tigres BC','Lobos BC',['1.65','—','2.20']],
+ ['Tênis Demo • 22:00','Player A','Player B',['1.72','—','2.05']]
+];
+function money(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function renderHome(){
+content.innerHTML=`<div class="hero"><h1>Bem-vindo à StatBet777</h1><p>Sportsbook e jogos recreativos em um ambiente 100% virtual.</p></div>
+<div class="section"><div class="section-head"><h2>Jogos demo</h2><span class="tag">Sem dinheiro real</span></div><div class="cards">${games.slice(0,4).map((g,i)=>gameCard(g,i)).join('')}</div></div>
+<div class="section"><div class="section-head"><h2>Eventos em destaque</h2></div>${matches.map(matchHTML).join('')}</div>`;
+}
+function gameCard(g,i){return `<div class="game" onclick="play('${g[0]}')"><div class="game-icon">${g[1]}</div><h3>${g[0]}</h3><div class="tag">${g[2]}</div></div>`}
+function matchHTML(m){return `<div class="match"><div class="league">${m[0]}</div><div class="teams"><b>${m[1]}</b><b>${m[2]}</b></div><div class="odds">${m[3].map((o,i)=>o==='—'?`<div class="odd">—</div>`:`<div class="odd" onclick="addBet('${m[1]} x ${m[2]}','${['Casa','Empate','Fora'][i]}',${o})">${['Casa','Empate','Fora'][i]}<br><b>${o}</b></div>`).join('')}</div></div>`}
+function show(page){
+if(page==='home'){renderHome();return}
+if(page==='sports'){content.innerHTML=`<div class="hero"><h1>Esportes</h1><p>Eventos e odds exclusivamente fictícios.</p></div>${matches.concat(matches).map(matchHTML).join('')}`;return}
+if(page==='casino'){content.innerHTML=`<div class="hero"><h1>Cassino Demo</h1><p>Jogos recreativos simulados, sem apostas reais.</p></div><div class="cards">${games.map((g,i)=>gameCard(g,i)).join('')}</div>`;return}
+if(page==='history'){content.innerHTML=`<div class="hero"><h1>Histórico</h1><p>Suas apostas virtuais.</p></div>${history.length?history.map(x=>`<div class="match"><b>${x.game}</b><br><span class="tag">${x.choice} • ${money(x.stake)} • ${x.status}</span></div>`).join(''):'<div class="empty">Nenhuma aposta demo ainda.</div>'}`}
+}
+function play(name){alert(name+' — modo DEMO\\n\\nAqui entraria a mecânica visual do jogo com créditos virtuais. Nenhum prêmio ou dinheiro real é utilizado.')}
+function addBet(game,choice,odd){coupon=[{game,choice,odd}];document.getElementById('coupon').innerHTML=`<div class="bet"><small>${game}</small><br>${choice}<b>${odd}</b></div>`;document.getElementById('stakebox').style.display='block'}
+function clearCoupon(){coupon=[];document.getElementById('coupon').innerHTML='<div class="empty">Selecione uma odd para adicionar ao cupom.</div>';document.getElementById('stakebox').style.display='none'}
+function placeBet(){let stake=Number(document.getElementById('stake').value);if(!coupon.length||stake<=0||stake>balance){alert('Valor virtual inválido.');return}balance-=stake;history.unshift({game:coupon[0].game,choice:coupon[0].choice,stake,status:'Aberta'});document.getElementById('balance').textContent=money(balance);alert('Aposta DEMO registrada. Nenhum dinheiro real foi movimentado.');clearCoupon()}
+show('home');
+</script>
+</body>
+</html>
